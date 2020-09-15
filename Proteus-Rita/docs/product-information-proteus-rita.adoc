@@ -1,0 +1,9 @@
+= Product Information Document Proteus Rita
+
+Dokumen berikut berisi penjelasan terkait semua _product_ yang ada di dalam sistem (System Name). Berikut untuk list dari product information :
+
+
+|===
+|*Document Title* |*Remark/Explanation*
+| <<product-information-proteus-rita/01-product-name-proteus-rita.adoc#, Product Name Proteus Rita>> |
+|===
