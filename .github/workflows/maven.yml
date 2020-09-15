@@ -17,5 +17,5 @@ jobs:
         env:
           username: ${{ secrets.ID }}
           password: ${{ secrets.Token }}
-        run: mvn org.sahli.asciidoc.confluence.publisher:asciidoc-confluence-publisher-maven-plugin:publish --file BPA/pom-almock.xml -Dusername=$username -Dpassword=$password
+        run: mvn org.sahli.asciidoc.confluence.publisher:asciidoc-confluence-publisher-maven-plugin:publish --file pom.xml -Dusername=$username -Dpassword=$password
      
