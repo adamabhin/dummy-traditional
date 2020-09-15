@@ -49,6 +49,6 @@ image::docs/images-proteus-rita/proteus-rita-definisi.png[Definisi Proteus Rita]
 
 <<docs/api-doc-proteus-rita.adoc#, API Documentation Proteus Rita>>
 
-<<docs/adr-doc-proteus rita.adoc#, ADR Document Proteus Rita>>
+<<docs/adr-doc-proteus-rita.adoc#, ADR Document Proteus Rita>>
 
 <<docs/product-information-proteus-rita.adoc#, Product Information Document Proteus Rita>>
