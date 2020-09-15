@@ -1,0 +1,7 @@
+= API Documentation Proteus Rita
+
+Berikut ini adalah _link_ untuk dokumentasi API sistem Proteus Rita.
+
+https://app.swaggerhub.com/apis/swaggeracc/PROTEUS_RITA/1.0.0
+
+NOTE: Anda harus bergabung dengan grup SERPUL swaggerhub terlebih dahulu untuk mengakses API.
