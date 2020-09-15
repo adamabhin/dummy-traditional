@@ -9,7 +9,7 @@ Proteus Rita dibuat karena IRS Rita _price_ adalah 8 juta untuk setiap _cluster_
 
 image::docs/images-proteus-rita/proteus-rita-definisi.png[Definisi Proteus Rita]
 
-== Anggota Tim Proteus Rita
+== Team Involved
 
 |===
 | *Name* | *Role* | *Email*
@@ -35,7 +35,7 @@ image::docs/images-proteus-rita/proteus-rita-definisi.png[Definisi Proteus Rita]
 | dhadiansyah@alterra.id
 |===
 
-== Informasi Teknis
+== Technical Information
 
 <<docs/technology-proteus-rita.adoc#, Technology Proteus Rita>>
 
@@ -48,3 +48,7 @@ image::docs/images-proteus-rita/proteus-rita-definisi.png[Definisi Proteus Rita]
 == Documentation
 
 <<docs/api-doc-proteus-rita.adoc#, API Documentation Proteus Rita>>
+
+<<docs/adr-doc-proteus rita.adoc#, ADR Document Proteus Rita>>
+
+<<docs/product-information-proteus-rita.adoc#, Product Information Document Proteus Rita>>
