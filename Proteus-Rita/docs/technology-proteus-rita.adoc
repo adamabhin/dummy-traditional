@@ -1,0 +1,26 @@
+= Technology
+:--[no-]html-to-native:
+:author: “Farida Nur Hidayah”
+:date: “2020-03-19”
+:document type: “6”
+:summary: “Informasi tentang teknologi Proteus Rita”
+
+|===
+| *Spesification* | *Name* | *Description*
+
+| Programming Language
+| GoLang
+|
+
+|
+| PHP
+| Dashboard
+
+| Database
+| MySQL
+|
+
+| Others
+| Systemd
+|
+|===

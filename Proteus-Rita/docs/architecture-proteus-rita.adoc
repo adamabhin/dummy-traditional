@@ -1,0 +1,7 @@
+= Architecture Proteus Rita
+
+== Architecture
+
+Berikut adalah gambar diagram _High Level Architecture_ sistem Proteus Rita.
+
+image::images-proteus-rita/proteus-rita-hla.png[HLA Proteus Rita]

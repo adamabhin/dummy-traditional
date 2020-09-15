@@ -1,0 +1,9 @@
+= Development Proteus Rita
+
+== Development
+
+=== Workflow / Gitflow
+
+Berikut adalah gambar _Gitflow_ pada sistem Proteus Rita.
+
+image::images-proteus-rita/workflow.png[Gitflow Proteus Rita]
