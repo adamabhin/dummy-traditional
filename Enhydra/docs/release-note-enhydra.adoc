@@ -1,0 +1,12 @@
+= Release Note Enhydra
+
+Current Version: *1.8.0* 
+
+Update End Point & Unit Test Coverage
+
+== What's new?
+
+1. Restructure end point 
+2. Improve code detil apresiasi 
+3. Integration komentar on detil saran perbaikan 
+4. Improve unit test coverage (saran perbaikan)
