@@ -1,0 +1,265 @@
+= Technical Additional Note Disbursement 
+
+== LUCENT & DISBURSE (MALLACA) NOTES
+
+=== URL
+
+|===
+| *Platform Name* | *DEV Host*  | *UAT Host* | *PROD Host*
+
+| Lucent OPS Dashboard 
+| https://lucent-ops.sumpahpalapa.com 
+| https://lucent-ops-uat.sumpahpalapa.com 
+| https://lucent-opsalterra.id
+
+| Lucent Merchant/Client Dashboard 
+| https://lucent-dashboard.sumpahpalapa.com 
+| https://lucent-uat.sumpahpalapa.com 
+| https://lucentalterra.id
+
+| Lucent API |https://kong.sumpahpalapa.com/lucent 
+| https://kong.sumpahpalapa.com/lucent-uat 
+| https://gw.alterra.id/lucent
+
+|Mallaca API 
+| http://103.117.20 * . * * :9*** 
+| http://103.117.20 * . * * :9*** 
+| http://103.117.20 * . * * :9***
+
+|===
+
+=== MALLACA
+
+Docker repo: https://hub.docker.com/repository/docker/sepulsa/mallaca
+
+=== DEVELOPMENT
+
+Masih pakai dockerized di bunker. Pastikan sudah mempunyai `key` dan `VPN`. Untuk memudahkan silahkan buat file atau tambah text di bawah ini jika sudah ada di file `~/.ssh/config`
+
+....
+Host disbursement-devel
+        HostName        103.117.20*.**
+        User    infra
+        Port    22
+        IdentityFile /go/to/your/disbursement_devel.pem
+        ServerAliveInterval     60
+....
+
+Pastikan pem sudah 600
+
+....
+chmod 600 /go/to/your/disbursement_devel.pem
+....
+
+Jika sudah, tinggal `ssh disbursement-devel` untuk connect ke shellnya.
+
+
+=== BUILD & RUN
+
+_Container dev_ tidak jalan dari _docker-compose_, tapi _manual build_. Source code ada di GOPATH (tapi sudah pakai GoModule ya, hanya lokasi saja) `/home/infra/go/src/disbursement`, _branch = development_
+
+Command untuk build and run container dari Project path ya.
+
+[source,bash]
+----
+
+## PULL IMAGE DEV
+docker pull sepulsa/mallaca:dev
+
+## SETUP ENV VARS
+export DEVELOPMENT_DOCKER_NET_NAME=disbursement-network \
+DEVELOPMENT_DB_HOST=disbursement-dev.cn26rqn0gh39.ap-southeast-1.rds.amazonaws.com \
+DEVELOPMENT_DB_USER=sepulsadev \
+DEVELOPMENT_DB_PASS=xxxxxxxxxx \
+DEVELOPMENT_DB_NAME=disbursement_dev \
+GITHUB_USER=xxxxxxxxxx \
+GITHUB_TOKEN=xxxxxxxxxx \
+APM_SERVICE_NAME_DEVEL=disbursement_devel \
+ELASTIC_APM_SERVER_URL=http://103.117.207.***:8*** \
+ELASTIC_APM_SECRET_TOKEN=xxxxxxxxxx \
+ENCRYPT_KEY=xxxxxxxxxx;
+
+## STOP CONTAINER & RECREATE DOCKER NETWORK
+sudo docker rm $(sudo docker stop $(sudo docker ps -a -q --filter ancestor=disbursement:development --format="{{.ID}}")); \
+sudo docker network rm $(sudo docker network stop $(sudo docker network ls -q --filter name=$DEVELOPMENT_DOCKER_NET_NAME --format="{{.ID}}")); \
+sudo docker network create $DEVELOPMENT_DOCKER_NET_NAME;
+
+## RE RUN CONTAINER API
+sudo docker stop disburse_server; \
+sudo docker run --rm -p 9000:9000 -v /etc/localtime:/etc/localtime:ro \
+-e ELASTIC_APM_SERVICE_NAME=${APM_SERVICE_NAME_DEVEL} \
+-e ELASTIC_APM_SERVER_URL=${ELASTIC_APM_SERVER_URL} \
+-e ELASTIC_APM_SECRET_TOKEN=${ELASTIC_APM_SECRET_TOKEN} \
+-e PGHOST=${DEVELOPMENT_DB_HOST} \
+-e PGUSER=${DEVELOPMENT_DB_USER} \
+-e PGPASS=${DEVELOPMENT_DB_PASS} \
+-e DBNAME=${DEVELOPMENT_DB_NAME} \
+-e ENCRYPT_KEY=${ENCRYPT_KEY} \
+-e GITHUB_USER=${GITHUB_USER} \
+-e GITHUB_TOKEN=${GITHUB_TOKEN} \
+-e APPENV=dev \
+-e APPMODE=server \
+--name=disburse_server \
+--network=${DEVELOPMENT_DOCKER_NET_NAME} \
+-v $(pwd)/config.yaml:/app/config.yaml \
+-d sepulsa/mallaca:dev;
+
+######## CONTOH 1 MERCHANT 1 WORKER DENGAN QUEUENAME MASING2
+
+## RERUN CONTAINER WORKER FOR STI Merchant
+sudo docker stop sti_worker; \
+sudo docker run --rm -v /etc/localtime:/etc/localtime:ro \
+-e ELASTIC_APM_SERVICE_NAME=${APM_SERVICE_NAME_DEVEL} \
+-e ELASTIC_APM_SERVER_URL=${ELASTIC_APM_SERVER_URL} \
+-e ELASTIC_APM_SECRET_TOKEN=${ELASTIC_APM_SECRET_TOKEN} \
+-e PGHOST=${DEVELOPMENT_DB_HOST} \
+-e PGUSER=${DEVELOPMENT_DB_USER} \
+-e PGPASS=${DEVELOPMENT_DB_PASS} \
+-e DBNAME=${DEVELOPMENT_DB_NAME} \
+-e ENCRYPT_KEY=${ENCRYPT_KEY} \
+-e GITHUB_USER=${GITHUB_USER} \
+-e GITHUB_TOKEN=${GITHUB_TOKEN} \
+-e APPENV=dev \
+-e APPMODE=worker \
+-e WORKERNAME=sti_worker \
+-e QUEUENAME=sti_transaction \
+--name=sti_worker \
+--network=${DEVELOPMENT_DOCKER_NET_NAME} \
+-v $(pwd)/config.yaml:/app/config.yaml \
+-d sepulsa/mallaca:dev;
+
+## RERUN CONTAINER WORKER FOR GADA Merchant
+sudo docker stop gada_worker; \
+sudo docker run --rm -v /etc/localtime:/etc/localtime:ro \
+-e ELASTIC_APM_SERVICE_NAME=${APM_SERVICE_NAME_DEVEL} \
+-e ELASTIC_APM_SERVER_URL=${ELASTIC_APM_SERVER_URL} \
+-e ELASTIC_APM_SECRET_TOKEN=${ELASTIC_APM_SECRET_TOKEN} \
+-e PGHOST=${DEVELOPMENT_DB_HOST} \
+-e PGUSER=${DEVELOPMENT_DB_USER} \
+-e PGPASS=${DEVELOPMENT_DB_PASS} \
+-e DBNAME=${DEVELOPMENT_DB_NAME} \
+-e ENCRYPT_KEY=${ENCRYPT_KEY} \
+-e GITHUB_USER=${GITHUB_USER} \
+-e GITHUB_TOKEN=${GITHUB_TOKEN} \
+-e APPENV=dev \
+-e APPMODE=worker \
+-e WORKERNAME=gada_worker \
+-e QUEUENAME=gada_transaction \
+--name=gada_worker \
+--network=${DEVELOPMENT_DOCKER_NET_NAME} \
+-v $(pwd)/config.yaml:/app/config.yaml \
+-d sepulsa/mallaca:dev;
+
+## RERUN CONTAINER WORKER FOR GAMA Merchant
+sudo docker stop gama_worker; \
+sudo docker run --rm -v /etc/localtime:/etc/localtime:ro \
+-e ELASTIC_APM_SERVICE_NAME=${APM_SERVICE_NAME_DEVEL} \
+-e ELASTIC_APM_SERVER_URL=${ELASTIC_APM_SERVER_URL} \
+-e ELASTIC_APM_SECRET_TOKEN=${ELASTIC_APM_SECRET_TOKEN} \
+-e PGHOST=${DEVELOPMENT_DB_HOST} \
+-e PGUSER=${DEVELOPMENT_DB_USER} \
+-e PGPASS=${DEVELOPMENT_DB_PASS} \
+-e DBNAME=${DEVELOPMENT_DB_NAME} \
+-e ENCRYPT_KEY=${ENCRYPT_KEY} \
+-e GITHUB_USER=${GITHUB_USER} \
+-e GITHUB_TOKEN=${GITHUB_TOKEN} \
+-e APPENV=dev \
+-e APPMODE=worker \
+-e WORKERNAME=gama_worker \
+-e QUEUENAME=gama_transaction \
+--name=gama_worker \
+--network=${DEVELOPMENT_DOCKER_NET_NAME} \
+-v $(pwd)/config.yaml:/app/config.yaml \
+-d sepulsa/mallaca:dev;
+----
+
+=== MIGRATION
+
+Migration selalu dijalankan ketika container start (ada di entrypoint.sh). Ini contoh running manualnya.
+
+* Migration Reset
++
+**WARNING**: It will destroy data
++
+[source,bash]
+----
+make migrate-reset dbhost=0.0.0.0 dbuser=yourdbuser dbname=disbursement dbpass=xxxxxxxxxx
+----
+
+* Migration UP
++
+[source,bash]
+----
+make migrate-up dbhost=0.0.0.0 dbuser=yourdbuser dbname=disbursement dbpass=xxxxxxxxxx
+----
+
+* Migration Check
++
+[source,bash]
+----
+make migrate-check dbhost=0.0.0.0 dbuser=yourdbuser dbname=disbursement dbpass=xxxxxxxxxx
+----
+
+* Seed Dummy Data
++
+**WARNING**: It will destroy data
++
+[source,bash]
+----
+make seed-dummy-data
+----
+
+NOTE : - CICD ke dev tidak bisa semenjak pakai Github Action (tidak bisa SSH, harus di whitelist).
+
+
+=== CREDENTIALS
+
+*MALLACA (DISBURSE ENGINE)*
+
+DEVELOPMENT
+
+....
+POSTGRESQL
+HOST=disbursement-dev.cn26rqn0gh39.ap-southeast-1.rds.amazonaws.com
+DB_USER=xxxxxxxxxx
+DB_PASS=xxxxxxxxxx
+DB_NAME=disbursement_dev
+....
+
+....
+RABBITMQ
+amqp_host: rabbitmq_server (local container) | 103.117.20*.** (public+vpn)
+amqp_port: 5672
+....
+
+....
+RABBITMQ ADMIN PAGE
+http://103.117.20*.**:15***
+user: xxxxxxxxxx
+pass: xxxxxxxxxx
+....
+
+*LUCENT*
+
+DEVELOPMENT
+
+....
+MONGODB
+  password:xxxxxxxxxx
+  username:xxxxxxxxxx
+  host: 10.25.4*.** (private) | 35.197.129.*** (public)
+  port: 27***
+  database: lucent
+  replica_set: rs0
+....
+
+....
+redis:
+  password:
+  host: 10.25.4*.** (private)
+  port: 6***
+  database: 0
+....
+
+NOTE : untuk dapat mengetahui host silahkan hubungi tim sistem Disbursement
+
