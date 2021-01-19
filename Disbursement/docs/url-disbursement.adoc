@@ -1,0 +1,27 @@
+= System URL Disbursement
+
+|===
+| *Platform Name*   | *DEV Host*    | *UAT Host*  | *PROD Host* 
+
+| Lucent OPS Dashboard             
+| https://lucent-ops.sumpahpalapa.com       
+| https://lucent-ops-uat.sumpahpalapa.com  
+| https://lucent-opsalterra.id 
+
+| Lucent Merchant/Client Dashboard 
+| https://lucent-dashboard.sumpahpalapa.com 
+| https://lucent-uat.sumpahpalapa.com      
+| https://lucentalterra.id     
+
+| Lucent API                       
+| https://kong.sumpahpalapa.com/lucent      
+| https://kong.sumpahpalapa.com/lucent-uat 
+| https://gw.alterra.id/lucent 
+
+| Mallaca API                      
+| http://103.117.20 * . * * :9***                
+| http://103.117.20 * . * * :9***               
+| https://api-mallaca.alterra.id
+
+|===
+
