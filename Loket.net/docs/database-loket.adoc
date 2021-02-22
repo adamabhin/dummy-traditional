@@ -1,0 +1,80 @@
+= Database Documentation Loket.NET
+
+Berisi dokumentasi database yang digunakan di dalam sistem, seperti daftar tabel dan gambar ERD beserta penjelasannya.
+
+Tabel yang dipakai bersama (Loket dan BSHPD)
+
+
+|===
+
+|*Table Name* |*Description*
+
+| bayar | menampung transaksi rekening air yang sudah lunas
+
+| bayarlltt | menampung transaksi lltt (limbah lumpur tinja t? perlu konfirmasi apakah dipakai hanya untuk solo saja)
+
+| bayarlimbah | menampung transaksi limbah (perlu konfirmasi apakah dipakai hanya untuk solo saja)
+
+| biayaotomatis | master data jenis biaya yang timbul otomatis berdasarkan jumlah tagihan terkena denda
+
+| byadministrasi_lain | -
+
+| bypemeliharaan_lain | -
+
+| byretribusi_lain | -
+
+| diameter | master data diameter pipa
+
+| flag | master data penandaan flow aplikasi (pelanggan normal, tidak kena denda, tidak ada air, terhapus secara akuntansi)
+
+| golongan | master data golongan pelanggan
+
+| jenisnonair | master data jenis tagihan nonair
+
+| kecamatan | master data kecamatan di mana pelanggan tinggal
+
+| kelurahan | master data kelurahan pelanggan (menampung relasi kecamatan juga)
+
+| kolektif | master data nama kolektif tagihan yang dibayar secara kolektif
+
+| logakses | ketika user login Loket akan dicatat di tabel ini 
+
+| loket | master data daftar loket (nama, kode, wilayah) 
+
+| meterai | master data tarif materai dan batas jumlah tagihan yang terkena biaya materai 
+
+| namabulan | master data daftar nama bulan (bisa dioptimize dijadikan array)
+
+| nonair | menampung data transaksi nonair dan piutang nonair
+
+| nosamb | menampung data nomor pelanggan yang dibuat data awal dari BSBS dan ketika calon pelanggan membayar tagihan non air sambungan baru
+
+| nosamb_lltt | (limbah lumpur tinja t? perlu konfirmasi apakah dipakai hanya untuk solo saja)
+
+| nosamb_limbah | (perlu konfirmasi apakah dipakai hanya untuk solo saja)
+
+| nosamb_lompat | -
+
+| pelanggan | master data pelanggan tagihan air
+
+| pelanggan_limbah | (perlu konfirmasi apakah dipakai hanya untuk solo saja)
+
+| pelanggan_lltt | (limbah lumpur tinja t? perlu konfirmasi apakah dipakai hanya untuk solo saja)
+
+| pengaturan | menampung berbagai pengaturan aplikasi
+
+| pengaturan_laporan | menampung berbagai pengaturan menu laporan
+
+| piutang | menampung tagihan air yang belum dibayar
+
+| rayon | master data rayon
+
+| tanggaldenda | settingan untuk tanggal mulai denda tagihan
+
+| urutanbaca | -
+
+| wilayah | master data wilayang pelanggan PDAM
+
+| param_denda | master data denda berdasarkan presentase atau tarif tertentu
+
+|===

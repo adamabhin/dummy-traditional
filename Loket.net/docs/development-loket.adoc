@@ -1,0 +1,119 @@
+:toc:
+:toc-title:
+
+= Development Loket.NET
+
+Untuk langkah awal pahami dahulu silahkan pahami github work flow berikut https://guides.github.com/introduction/flow/[]
+
+== Development Step
+
+Untuk membuat feature/hotfix/chore dan sebagainya, langsung buat branch baru sesuai tujuan/task nya.
+Misalkan bila pengerjaan branch berdasarkan JIRA task maka namai branch tersebut dengan JIRA ID nya.
+
+Untuk memulai development pada Bacameter.NET pastikan sedang berada pada branch `master` (main) branch.
+
+Contoh:
+```powershell
+PS D:\ALTERRA\BSA\loket.net> git branch
+....
+....
+* master
+PS D:\ALTERRA\BSA\loket.net> git checkout -b PDAM1419
+```
+
+Bila pengerjaan sudah selesai lakukan link:https://github.com/bimasaktialterra/bacameter.net/compare[PR (Pull Request)].
+
+Kemudian pilih `base` master/main branch dan `compare` branch feature `PDAM1419` 
+
+_Request reviewer_ minimal kepada salah satu anggota tim.
+
+
+Bila terdapat _conflict_ diskusikan dengan tim dan coba lakukan _solve conflict_.
+
+Ketika PR biasanya ada periksa kembali SonarLint, pastikan semua PR Check sudah lolos. 
+
+Bila masih terdapat status `failed`, silakan perbaiki berdasarkan hasil rekomendasi check PR.
+
+
+=== Instalasi local development
+. Clone repository https://github.com/bimasaktialterra/loket.net[Loket.net]
+. _Import database_ Loket.net
+. _Build project_
+. Konfigurasi koneksi ke MySQL _database_ melalui SQLite pada _file_ db `Apps\Loket.App.Wpf\bin\debug\netcoreapp3.1\loket.db`
+
+=== SQLite configuration builder
+Konfigurasi MySQL _database_ di SQLite disimpan pada `IConfigurationBuilder` ketika membuat instance `HostBuilder`
+
+----
+Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((builderContext, config) =>
+    {
+        config.AddSQLiteConfiguration();
+    })
+----
+
+Untuk mengakses _value_ konfigurasi _database_ gunakan _interface_ `Microsoft.Extensions.Configuration.IConfiguration`
+
+
+----
+string connectionString = $"server={configuration["DbHost"]};port={configuration["DbPort"]};database={configuration["DbName"]};user={configuration["DbUser"]};password={configuration["DbPass"]};Allow Zero Datetime=True;Convert Zero Datetime=True";
+----
+
+=== Membuat Halaman dan Navigasi
+
+==== Page
+- Buat _file View_ di _folder_ `Apps\Loket.App.Wpf\Views`
+- Buat _file ViewModel_ di _folder_ `Apps\Loket.App.Wpf\ViewModels`
+- _Inject ViewModel_ yang telah dibuat sebelumnya pada _dependency injector_ `Loket.App.Wpf.DependencyInjection.ViewModelExtension`
+
+----
+    services.AddSingleton<CreateViewModel<SampleViewModel>>(services =>
+        {
+            return () => services.GetRequiredService<SampleViewModel>();
+        });
+
+    services.AddScoped<SampleViewModel>();
+----
+
+- Buat `DataTemplate` untuk views di `Loket.App.Wpf.Views.MainView`
+
+    <DataTemplate DataType="{x:Type viewmodels:SampleViewModel}">
+        <views:SampleView />
+    </DataTemplate>
+
+- Tambahkan `ViewType` sesuai dengan halaman yang telah dibuat sebelumnya di `Loket.App.Wpf.State.Navigators`
+- Buat menu _header_ pada `Loket.App.Wpf.Views.Components.AppHeaderView`
+
+    <RadioButton Grid.Column="6" Content="Sample"
+        IsChecked="{Binding CurrentViewModel, Mode=OneWay, Converter={StaticResource EqualValueToParameterConverter}, ConverterParameter={x:Type viewmodels:SampleViewModel}}" 
+        Command="{Binding UpdateCurrentViewModelCommand}" 
+        CommandParameter="{x:Static nav:ViewType.Sample}" />
+
+=== Register dan Consume Services
+
+. Buat _interface_ pada _project_ `Loket.Business.Interface`
+. Buat _class_ yang berisi implementasi dari _interface_ di _project_ `Loket.Business.Impl`
+. _Register interface_ dan _class_ tersebut pada _dependency injector_ `Loket.App.Wpf.DependencyInjection.ApplicationServiceExtension`
+. _Register service_ ke `ILoketBusiness`, ViewModels tidak mengakses _service class_ secara langsung melainkan melalui _interface_ `ILoketBusiness`
+
+=== Membuat persistence interface
+Persistence _interface_ digunakan untuk mengetahui operasi apa saja yang dapat dilakukan pada _layer_ Persistence.
+
+
+. Buat _interface_ pada _project_ `LoketPersistenceInterface`
+. Buat _class_ pada _project_ `Loket.Persistence.MySql.Repositories` yang terdapat _inheritance_ ke _interface_ yang telah dibuat sebelumnya, class ini berisi _query_ ke _database_
+. _Register interface_ dan _repository class_ tersebut pada _dependency injector_ `Loket.App.Wpf.DependencyInjection.MySqlDbPersistenceExtension`
+
+=== Membuat Print Preview
+
+Berikut panduan singkat untuk membuat fitur print preview
+
+<<development-loket/print-preview-technical.adoc#, Print Preview Development Flow Loket.NET>>
+
+=== Test Coverage dengan SonarQube / SonarCloud
+
+Untuk menjaga kualitas kode, mengatur skalabilitas, dan sebagainya kita atur standarnya dengan sonarqube,
+
+berikut panduannya.
+
+<<development-loket/sonarscan-test-coverage.adoc#, SonarScan and Test Coverage (Local Windows) Loket.NET>>

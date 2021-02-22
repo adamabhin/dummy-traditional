@@ -1,0 +1,10 @@
+= Product Information Document Loket Delphi
+
+Dokumen berikut berisi penjelasan terkait existing flow yang ada di dalam sistem Loket Delphi Berikut untuk list dari product information :
+
+|===
+|*Document Title* |*Remark/Explanation*
+| link:./product-information-loket/Flow-Create-Angsuran.docx[Flow Create Angsuran] | penjelasan disertai screenshot untuk membuat angsuran
+|===
+
+Penjelasan mengenai flow pada Loket.NET silahkan baca di <<./flow-wire-loket.adoc#, Flow and Wireframe Loket.NET>>

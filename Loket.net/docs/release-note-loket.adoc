@@ -1,0 +1,4 @@
+= Release Note Loket.NET
+
+Berisi catatan rilis sistem Loket.NET.
+

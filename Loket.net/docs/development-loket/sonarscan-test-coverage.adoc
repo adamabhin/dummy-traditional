@@ -1,0 +1,90 @@
+[[unit-testing--sonarqube-local-windows]]
+= SonarScan and Test Coverage (Local Windows) Loket.NET
+
+Loket.NET development follow best practice code quality based on SonarQube static code analysis.
+
+Request access to Loket.NET https://sonarcloud.io/dashboard?id=bimasaktialterra_loket.net[SonarCloud.io] dashboard to https://ata.to/isd[Infra Team here].
+
+We can do test coverage & sonarscan our feature branch locally, please do following summarized steps below.
+
+You can refer to https://hectormartinez.dev/posts/dotnet-coverage-coverlet[this article] for what we will do here.
+
+== Prerequisite
+
+For preparing .NET test coverage locally we need;
+
+[arabic]
+. Windows Powershell, better with http://chocolatey.org/[chocolatey]
+installed
+. Install JDK >= 12.x just use `choco install openjdk`
+. Install
+https://hub.docker.com/editions/community/docker-ce-desktop-windows/[Docker
+desktop]
+. Download https://www.sonarqube.org/downloads/[SonarQube] better run it
+as container
++
+[source,powershell]
+----
+docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
+----
+. Install *dotnet-sonarscanner* globally
++
+[source,powershell]
+----
+dotnet tool install --global dotnet-sonarscanner --version 5.0.2
+----
+
+== Run dotnet-sonarscanner on main branch
+
+Make sure Sonarqube running on http://localhost:9000 then run these
+commands on Windows Powershell.
+
+[source,powershell]
+----
+dotnet-sonarscanner begin -d:sonar.login=admin -d:sonar.password=admin -k:"loket.net" -d:sonar.host.url="http://localhost:9000" -s:$PWD\SonarQube.Analysis.xml
+
+dotnet test --settings coverlet.runsettings --logger trx
+
+dotnet-sonarscanner end -d:sonar.login=admin -d:sonar.password=admin
+----
+
+== New XUnit Test Project
+
+Create new XUnit project on related folder that you want to cover the
+test, please refer to simple tutorial above or https://xunit.net/docs/getting-started/netcore/cmdline[official xunit website].
+
+We use `SonarQube.Analysis.xml` to store all sonarqube scanner parameters to
+exclude duplication scan, to exclude unit test on some folder & files
+etc).
+
+You must add your *TestResult* project folder to
+*SonarQube.Analysis.xml* on property `sonar.cs.opencover.reportsPaths` and
+`sonar.cs.vstest.reportsPath` so that SonarQube can read your coverage
+report properly.
+
+If you need to exclude folder/files that no need to test please define
+on `sonar.exclusions` property.
+
+If you need to exclude folder/files that no need to scan as duplicate
+please define on `sonar.cpd.exclusions` property.
+
+== Known Issues
+
+If you get error
+`Unable to find the SonarQube analysis settings file 'D:\ALTERRA\BSA\loket.net'. Please fix the path to this settings file.`
+
+Please change `-s:$PWD\SonarQube.Analysis.xml` with your full path eg:
+`D:\ALTERRA\BSA\loket.net\SonarQube.Analysis.xml`
+
+If you get different score between local sonarqube & sonarcloud.io
+please delete each of your `TestResults` on test project directories, eg
+for test project `Core\Loket.Core.Handlers.Test` delete
+`Core\Loket.Core.Handlers.Test\TestResults`
+
+== References
+
+* https://hectormartinez.dev/posts/dotnet-coverage-coverlet[]
+* https://docs.sonarqube.org/latest/setup/get-started-2-minutes[]
+* https://docs.sonarqube.org/latest/analysis/scan/sonarscanner-for-msbuild/[]
+* https://devblogs.microsoft.com/scripting/powertip-find-current-directory-in-powershell/[]
+* https://github.com/SonarSource/sonar-scanner-msbuild/blob/master/docs/SonarQube.Analysis.xml[]

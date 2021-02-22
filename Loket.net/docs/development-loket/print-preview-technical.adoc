@@ -1,0 +1,117 @@
+= Print Preview Development Flow Loket.NET
+
+Build print document & preview it in-app. We use FastReport with FRX template file extension (.frx) and throw the data from our code to the template as link:https://docs.microsoft.com/en-us/dotnet/api/system.data.dataset?view=netcore-3.1[DataSet]
+
+== Prerequisite
+To ease our progress to build report template, we need FastReport designer that can be download on:
+link:https://fastreports.github.io/FastReport.Documentation/FastReportDesignerCommunityEdition.html[FastReport Designer]
+
+
+== Usage
+
+. Prepare the .frx report with FastReport standard using FastReport Designer above (or also the template can be created manual by code) => Sample Template can be check on `Assets/Templates/SampleTemplate.frx`
+. Place created template to template directory (`Assets/Templates`), and set *Properties* > Copy To Output as "Copy if Newer"
+. In our command:
++
+----
+using FastReport;
+using Loket.App.Wpf.Helpers.Utilities;
+...
+
+public override async Task ExecuteAsync(object parameter)
+{
+    // define dataset
+    DataSet dataSet = CreateDataSet();
+
+    // define template path
+    string TemplatePath = PrintHelper.TemplateDirectory("SampleTemplate.frx");
+    
+    // add additional data on render (ex. change value of specific object in template)
+    PrintHelper.RunBeforeRender += PrintBuild;
+
+    // show render
+    PrintHelper.ShowPreview(dataSet, TemplatePath);
+}
+----
++
+the main process to create print document above is:
++
+- Define Dataset
+- Define Template Path (just assign the document name as parameter)
+- Add Additional Function on render (optional), this function will be run when rendering document, we can invoke when we want to modify the value in our template (such as title template)
+- Show Preview
+
+
+== Process
+
+- Define DataSet (this data will be rendered in our document) - note the `TableName` in this DataSet must match the `TableSource Name` in template
++
+----
+private DataSet CreateDataSet()
+{
+    DataSet dataSet = new DataSet();
+
+    DataTable table = new DataTable();
+    table.TableName = "MainData";
+    dataSet.Tables.Add(table);
+
+    table.Columns.Add("ID", typeof(int)); // value type must match our template
+    table.Columns.Add("Name", typeof(string));
+
+    var ListData = new List<string>() { "data1", "data2", "data3" };
+    int i = 0;
+    foreach (var item in ListData)
+    {
+        var ID = i;
+        var Name = item;
+
+        table.Rows.Add(ID, Name);
+
+        i++;
+    }
+
+    return dataSet;
+}
+----
++
+in our template, `TableDataSource Name` must match our `DataSet's TableName`
++
+----
+<?xml version="1.0" encoding="utf-8"?>
+<Report ReportInfo.CreatorVersion="1.0.0.0">
+  <Dictionary>
+    <TableDataSource Name="MainData" ReferenceName="Data.MainData" DataType="System.Int32" Enabled="true">
+      <Column Name="ID" DataType="System.Int32"/>
+      ...
+----
+
+- Define Template Path (if template inside child folder, simply add folder name before template name)
++
+----
+string TemplatePath = PrintHelper.TemplateDirectory("SampleTemplate.frx");
+
+// or inside child folder
+
+string TemplatePath = PrintHelper.TemplateDirectory("Folder1\\Folder2\\SampleTemplate.frx");
+----
+
+- Add Additional Function (optional) - in this example, we replace the text in Title Object
++
+----
+private void PrintBuild(object sender, EventArgs e)
+{
+    Report report = (Report)sender;
+    ((TextObject)report.FindObject("Text5")).Text = "Judul Text";
+}
+----
++
+object type must match the object type in template (TextObject/etc)
+
+- Last step, assign DataSet and TemplatePath to our Helper, and it will show the preview
++
+----
+PrintHelper.ShowPreview(dataSet, TemplatePath);
+----
+
+== Reference
+* https://www.fast-report.com/public_download/FR4.6.ProgrammerManual-en.pdf[]

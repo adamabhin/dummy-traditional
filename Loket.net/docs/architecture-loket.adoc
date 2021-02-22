@@ -1,0 +1,18 @@
+= Architecture Loket.NET
+
+== Related System
+
+Loket.NET terdiri dari beberapa sistem yang saling terintegrasi. Berikut daftar sistem yang terhubung dengan Loket.NET.
+
+|===
+|*No* |*Nama Sistem* |*Deskripsi*
+
+|
+|
+|
+
+|===
+
+== High Level Architecture
+
+Bisa di isi dengan gambar HLA sistem. Gambar dapat dimasukkan pada folder `images-loket`.

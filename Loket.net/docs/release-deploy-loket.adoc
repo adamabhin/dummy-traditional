@@ -1,0 +1,11 @@
+= Release and Deployment Loket.NET
+
+Release akan dilakukan setiap minggu bila ada fitur yang sudah selesai _merge_ ke _main branch_.
+
+==  Release Schedule and Step
+
+Release dibuat secara manual melalui menu release Github.
+
+== Schedule and Step Deployment
+
+Deploy masih _build & compile output_ (exe) secara manual via Visual Studio Community

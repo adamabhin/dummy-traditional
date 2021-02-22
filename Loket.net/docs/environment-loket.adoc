@@ -1,0 +1,18 @@
+= Environment Loket.NET
+
+Dalam Loket.NET, tidak ada _environment_ seperti _web app_ atau _web services_ yang digunakan, hanya saja terdapat konfigurasi yang berbeda untuk _DB Connection_.
+
+|===
+|*Stage* |*Environment* |*Specs* |*Description* 
+|Development |IP Address | |
+| |DB Server | localhost| DB development dump from Testing all PDAM Pintar
+| |Git Repo | https://github.com/bimasaktialterra/loket.net[]|
+|Testing |IP Address | |
+| |DB Server | 117.103.66.* * * | DB Staging all PDAM Pintar
+| |Git Repo | https://github.com/bimasaktialterra/loket.net[]|
+|Production |DB Server | |
+| |DB Server | - | On BSA colocation
+| |Git Repo | https://github.com/bimasaktialterra/loket.net[] |
+|===
+
+*Note : Untuk detail IP Address, Anda dapat menghubungi Tim Development Loket.NET atau Tim Infrastruktur*

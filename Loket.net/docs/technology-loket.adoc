@@ -1,0 +1,14 @@
+= Technology Loket.NET
+
+Berikut ini adalah teknologi yang digunakan dalam pengembangan sistem Loket.NET:
+
+|===
+|*Specification* |*Name*
+|OS | Windows 10
+|Web Server| -
+|Programming Language | C#, .NET Core, WPF, XAML
+|Framework| Hexagonal Architecture
+
+|Container| -
+|Proxy| -
+|===
