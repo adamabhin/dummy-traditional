@@ -30,7 +30,7 @@ image::./images/tagihan-pelanggan-sr/Detail_Koreksi_Success.png[900,600]
 image::./images/tagihan-pelanggan-sr/Detail_HapusDendaSingle_Success.png[900,600]
 
 == Hapus Denda di Semua Rekening Berhasil
-image::./asimagessets/tagihan-pelanggan-sr/Detail_HapusDendaAll_Success.png[900,600]
+image::./images/tagihan-pelanggan-sr/Detail_HapusDendaAll_Success.png[900,600]
 
 == Code 
 
