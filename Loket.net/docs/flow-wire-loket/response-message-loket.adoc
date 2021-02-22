@@ -1,0 +1,24 @@
+= Penggunaan Response Message via UI Loket.NET
+
+Dokumen ini berisi tentang penggunaan dan pengaturan _response message_ secara UI maupun secara _code_.
+
+== Pengaturan Response Message Pada UI
+Halaman pengaturan _response message_ dapat diakses dari halaman _login_ pada _toolbar_ pertama dari kiri.
+
+image::../images/response_message_1.png[Halaman _Login_]
+
+image::../images/response_message_2.png[Halaman _Response Message_]
+
+Anda bisa melakukan pencarian terhadap _message_ yang Anda inginkan.
+
+image::../images/response_message_3.png[Pencarian _Response Message_]
+
+Kemudian untuk memperbarui _response message_ Anda dapat melakukan klik pada kolom _FullMessage_ dan menggantinya sesuai yang Anda butuhkan.
+
+image::../images/response_message_4.png[Edit _Response Message_ 1]
+
+image::../images/response_message_5.png[Edit _Response Message_ 2]
+
+Setelah itu klik tombol Simpan, dan muncul dialog pemberitahuan bahwa pengaturan _response message_ berhasil.
+
+image::../images/response_message_6.png[Dialog Setelah Simpan _Response Message_]

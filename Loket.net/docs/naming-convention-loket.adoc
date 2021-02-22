@@ -1,0 +1,42 @@
+= Naming Convention Loket.NET
+
+Berisi aturan penamaan dalam _development_ sistem.
+
+
+== General C#
+
+|===
+
+|*Kind* |*Rule*
+
+|Private field|_myPrivateField
+
+|Public field|MyPublicField
+
+|Protected field|MyProtectedField
+
+|Internal field|MyInternalField
+
+|Property|MyProperty
+
+|Method|MyMethod
+
+|Class|MyClass
+
+|Interface|IMyInterface
+
+|Local variable|myLocalVariable
+
+|Parameter|myParameter
+
+|===
+
+== WPF UI Element
+
+Tempatkan name property terlebih dahulu kemudian jenis UI element
+`<label Name="nameLabel" />` +
+`<TextBox Name="nameTextBox" />`
+
+'''
+
+Untuk penjelasan lebih lengkap bisa dibaca pada https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines?redirectedfrom=MSDN[link berikut].

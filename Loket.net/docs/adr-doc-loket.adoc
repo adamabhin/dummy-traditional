@@ -1,0 +1,9 @@
+=  ADR Document Loket.NET
+
+The documents below are the history of all decisions applied by the development team based on the exploration
+
+|===
+|*Document Title* |*Remark/Explanation*
+| <<adr-doc-loket/0001-adr-decision-1-loket.adoc#, [ADR-0001] Decision 1 Loket  >> |Template ADR
+|Next Decision | 
+|===

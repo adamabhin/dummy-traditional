@@ -1,0 +1,9 @@
+= Laporan Daftar Tunggakan Development Flow Loket.NET
+
+== Proses
+
+- Mendapatkan Data Laporan Daftar Tunggakan
+menggunakan query yang terdapat pada function GetLaporanTunggakanAsync di https://github.com/bimasaktialterra/loket.net/blob/main/Modules/Persistence/Loket.Persistence.MySql/Repositories/NoTableRepository.cs[*file ini*]
+
+- Menghitung Denda & Total Laporan Masing-Masing Pelanggan
+ditunjukkan pada function GetLaporanTunggakanAsync di https://github.com/bimasaktialterra/loket.net/blob/main/Business/Loket.Business.Impl/Services/LaporanService.cs[*file ini*]
