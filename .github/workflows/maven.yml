@@ -13,7 +13,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Almock
+      - name: dummy
         env:
           username: ${{ secrets.ID }}
           password: ${{ secrets.Token }}
