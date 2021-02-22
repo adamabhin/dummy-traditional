@@ -18,7 +18,7 @@
 <project>
 <modelVersion>4.0.0</modelVersion>
  <groupId>org.alterra.id</groupId>
-    <artifactId>proteus-chip</artifactId>
+    <artifactId>loket.net</artifactId>
     <version>1</version>
 <build>
   <plugins>
